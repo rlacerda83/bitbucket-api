@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Bitbucket\Services\Repositories;
 
 use Bitbucket\Services\Api;
@@ -27,6 +26,18 @@ class Repository extends Api
     /**
      * @param $account
      * @param $repo
+     * @param $branch
+     * @return mixed|\Psr\Http\Message\ResponseInterface
+     */
+    public function branch($account, $repo, $branch)
+    {
+        $url = sprintf('repositories/%s/%s/refs/branches/%s', $account, $repo, $branch);
+        return $this->requestGet($url);
+    }
+
+    /**
+     * @param $account
+     * @param $repo
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */
     public function commits($account, $repo)
@@ -41,7 +52,7 @@ class Repository extends Api
      * @param $repo
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */
-    public function branch($account, $repo)
+    public function mainBranch($account, $repo)
     {
         return $this->requestGet(
             sprintf('repositories/%s/%s/main-branch', $account, $repo)
@@ -61,6 +72,18 @@ class Repository extends Api
             $url .= sprintf('?q=name ~ "%s"', $filer);
         }
 
+        return $this->requestGet($url);
+    }
+
+    /**
+     * @param $account
+     * @param $repo
+     * @param $tag
+     * @return mixed|\Psr\Http\Message\ResponseInterface
+     */
+    public function tag($account, $repo, $tag)
+    {
+        $url = sprintf('repositories/%s/%s/refs/tags/%s', $account, $repo, $tag);
         return $this->requestGet($url);
     }
 }
